@@ -1,6 +1,6 @@
 import { initServer } from "@ts-rest/express";
-import { horsesContract } from "src/contracts/horses/horseContract";
-import { Horse } from "src/db/horse/model";
+import { horsesContract } from "../../contracts/horses/horseContract";
+import { Horse } from "../../db/horse/model";
 
 const server = initServer();
 
@@ -25,5 +25,21 @@ export const horseRouter = server.router(horsesContract, {
   getHorse: async ({ params: { id } }) => {
     const horse = await Horse.findById(id).exec();
     return { status: 200, body: horse ? horse.toObject() : null };
+  },
+  deleteHorse: async ({ params: { id } }) => {
+    const horse = await Horse.findOneAndUpdate(
+      { _id: id },
+      { is_deleted: true },
+      { new: true }
+    );
+    return { status: 202, body: horse ? horse.toObject() : null };
+  },
+  updateHorse: async ({ body: { name }, params: { id } }) => {
+    const horse = await Horse.findOneAndUpdate(
+      { _id: id },
+      { name },
+      { new: true }
+    );
+    return { status: 202, body: horse ? horse.toObject() : null };
   },
 });

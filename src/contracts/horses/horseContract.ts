@@ -1,7 +1,11 @@
 import { z } from "zod";
-import { ServerError, SuccessStatus } from "src/utils/statusCodes";
+import {
+  ClientError,
+  ServerError,
+  SuccessStatus,
+} from "../../utils/statusCodes";
 import { Horse } from "./types";
-import { globalContract } from "src/contracts/combineServiceContracts";
+import { globalContract } from "../../utils/initContracts";
 
 export const horsesContract = globalContract.router(
   {
@@ -44,6 +48,27 @@ export const horsesContract = globalContract.router(
         [SuccessStatus.OK]: globalContract.type<Horse | null>(),
       },
       summary: "Get a horse",
+    },
+    deleteHorse: {
+      method: "DELETE",
+      path: "/horses/:id",
+      body: z.any(),
+      responses: {
+        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
+      },
+      summary: "Soft-Delete a horse",
+    },
+    updateHorse: {
+      method: "PUT",
+      path: "/horses/:id",
+      body: z.object({
+        name: z.string({ message: "Please enter valid name." }).min(1),
+      }),
+      responses: {
+        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
+        [ClientError.BAD_REQUEST]: globalContract.type<string>(),
+      },
+      summary: "Update a horse",
     },
   },
   {

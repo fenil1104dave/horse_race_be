@@ -1,7 +1,7 @@
 import { Express } from "express";
 import { createExpressEndpoints } from "@ts-rest/express";
-import { contracts } from "src/contracts";
-import { horseRouter } from "src/routers/horses";
+import { contracts } from "../contracts";
+import { horseRouter } from "../routers/horses";
 
 const combinedRouters = {
   ...horseRouter,

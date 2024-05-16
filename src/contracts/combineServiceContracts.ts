@@ -1,7 +1,5 @@
-import { initContract } from "@ts-rest/core";
+import { globalContract } from "../utils/initContracts";
 import { horsesContract } from "./horses/horseContract";
-
-export const globalContract = initContract();
 
 export const contracts = globalContract.router({
   ...horsesContract,

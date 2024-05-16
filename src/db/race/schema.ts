@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { playerSchema } from "src/db/player/schema";
-import { stadiumSchema } from "src/db/stadium/schema";
-import { trackSchema } from "src/db/track/schema";
+import { playerSchema } from "db/player/schema";
+import { stadiumSchema } from "db/stadium/schema";
+import { trackSchema } from "db/track/schema";
 const { Schema } = mongoose;
 
 export const raceHistorySchema = new Schema({

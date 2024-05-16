@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { trackSchema } from "src/db/track/schema";
+import { trackSchema } from "db/track/schema";
 const { Schema } = mongoose;
 
 export const stadiumSchema = new Schema({

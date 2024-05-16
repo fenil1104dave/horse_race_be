@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { server } from "./src/server";
-import { HR_EXPRESS_PORT } from "./src/config";
-import { connectDB } from "./src/db";
-import { initRouters } from "./src/utils/initRouters";
+import { server } from "./server";
+import { HR_EXPRESS_PORT } from "./config";
+import { connectDB } from "./db";
+import "./utils/initContracts";
+import { initRouters } from "./utils/initRouters";
 
 const PORT = HR_EXPRESS_PORT || 3000;
 
