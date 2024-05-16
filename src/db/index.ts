@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { HR_MDB_DB, HR_MDB_HOST, HR_MDB_PORT } from "../config";
+import { HR_MDB_DB, HR_MDB_HOST, HR_MDB_PORT } from "src/config";
 
 export const connectDB = async () => {
   try {

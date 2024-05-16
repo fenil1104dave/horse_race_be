@@ -1,6 +1,8 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 
 export type Horse = {
-  id: ObjectId;
+  _id: Types.ObjectId;
   name: string;
+  date: Date;
+  is_deleted: boolean;
 };

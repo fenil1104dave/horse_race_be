@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { server } from "./src/server";
 import { HR_EXPRESS_PORT } from "./src/config";
 import { connectDB } from "./src/db";
-import { createExpressEndpoints, initServer } from "@ts-rest/express";
-import { contracts } from "./src/contracts";
+import { initRouters } from "./src/utils/initRouters";
 
 const PORT = HR_EXPRESS_PORT || 3000;
 
@@ -14,6 +13,7 @@ server.get("/", (req: Request, res: Response): Response => {
 const start = async () => {
   try {
     await connectDB();
+    initRouters(server);
     server.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
     });
@@ -21,7 +21,5 @@ const start = async () => {
     console.error(error);
     process.exit(1);
   }
-
-  // createExpressEndpoints(contracts, router, server);
 };
 start();

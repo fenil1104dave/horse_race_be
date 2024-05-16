@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { horseSchema } from "../horse/schema";
-import { jockeySchema } from "../jockey/schema";
+import { horseSchema } from "src/db/horse/schema";
+import { jockeySchema } from "src/db/jockey/schema";
 const { Schema } = mongoose;
 
 export const playerSchema = new Schema(
