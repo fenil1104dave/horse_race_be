@@ -4,30 +4,30 @@ import {
   ServerError,
   SuccessStatus,
 } from "../../utils/statusCodes";
-import { Horse } from "./types";
+import { Jockey } from "./types";
 import { globalContract } from "../../utils/initContracts";
 
-export const horsesContract = globalContract.router(
+export const jockeyContract = globalContract.router(
   {
-    createHorse: {
+    createJockey: {
       method: "POST",
-      path: "/horse",
+      path: "/jockey",
       responses: {
-        [SuccessStatus.CREATED]: globalContract.type<Horse>(),
+        [SuccessStatus.CREATED]: globalContract.type<Jockey>(),
         [ServerError.INTERNAL_SERVER_ERROR]: globalContract.type<Error>(),
       },
       body: z.object({
         name: z.string(),
         is_deleted: z.boolean().optional(),
       }),
-      summary: "Add a horse.",
+      summary: "Add a jockey.",
     },
-    getHorses: {
+    getJockeys: {
       method: "GET",
-      path: "/horses",
+      path: "/jockeys",
       responses: {
         [SuccessStatus.OK]: globalContract.type<{
-          horses: Horse[];
+          jockeys: Jockey[];
           total: number;
         }>(),
       },
@@ -40,36 +40,36 @@ export const horsesContract = globalContract.router(
         search: z.string().optional(),
         include_deleted: z.boolean().optional(),
       }),
-      summary: "Get all horses",
+      summary: "Get all jockeys",
     },
-    getHorse: {
+    getJockey: {
       method: "GET",
-      path: "/horses/:id",
+      path: "/jockeys/:id",
       responses: {
-        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
+        [SuccessStatus.OK]: globalContract.type<Jockey | null>(),
       },
-      summary: "Get a horse",
+      summary: "Get a jockey",
     },
-    deleteHorse: {
+    deleteJockey: {
       method: "DELETE",
-      path: "/horses/:id",
+      path: "/jockeys/:id",
       body: z.any(),
       responses: {
-        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
+        [SuccessStatus.OK]: globalContract.type<Jockey | null>(),
       },
-      summary: "Soft-Delete a horse",
+      summary: "Soft-Delete a jockey",
     },
-    updateHorse: {
+    updateJockey: {
       method: "PUT",
-      path: "/horses/:id",
+      path: "/jockeys/:id",
       body: z.object({
         name: z.string({ message: "Please enter valid name." }).min(1),
       }),
       responses: {
-        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
+        [SuccessStatus.OK]: globalContract.type<Jockey | null>(),
         [ClientError.BAD_REQUEST]: globalContract.type<string>(),
       },
-      summary: "Update a horse",
+      summary: "Update a jockey",
     },
   },
   {

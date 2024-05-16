@@ -15,8 +15,15 @@ export const horseRouter = server.router(horsesContract, {
       return { status: 500, body: err as Error };
     }
   },
-  getHorses: async () => {
-    const horses = await Horse.find().lean();
+  getHorses: async ({ query: { include_deleted } }) => {
+    const query = Horse.find();
+
+    if (typeof include_deleted === "boolean") {
+      query.find({ is_deleted: include_deleted });
+    }
+
+    const horses = await query.exec();
+
     return {
       status: 200,
       body: { horses, total: horses.length },
