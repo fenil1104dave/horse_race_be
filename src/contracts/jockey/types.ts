@@ -1,8 +1,4 @@
-import { Types } from "mongoose";
-
-export type Jockey = {
-  _id: Types.ObjectId;
-  name: string;
-  date: Date;
+export interface Jockey extends BaseDBModel {
+  created_at: Date;
   is_deleted: boolean;
-};
+}

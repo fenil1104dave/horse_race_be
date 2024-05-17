@@ -1,13 +1,9 @@
 import mongoose from "mongoose";
-import { horseSchema } from "db/horse/schema";
-import { jockeySchema } from "db/jockey/schema";
 const { Schema } = mongoose;
 
-export const playerSchema = new Schema(
-  {
-    jockey: { type: jockeySchema, required: true },
-    horse: { type: horseSchema, required: true },
-    lane_number: { type: Number, required: true },
-  },
-  { _id: false }
-);
+export const playerSchema = new Schema({
+  created_at: { type: Date, default: Date.now },
+  jockey: { type: mongoose.Schema.Types.ObjectId, ref: "HR_jockeys" },
+  horse: { type: mongoose.Schema.Types.ObjectId, ref: "HR_horses" },
+  lane_number: { type: Number, required: true },
+});

@@ -1,14 +1,20 @@
 import mongoose from "mongoose";
-import { playerSchema } from "db/player/schema";
-import { stadiumSchema } from "db/stadium/schema";
-import { trackSchema } from "db/track/schema";
 const { Schema } = mongoose;
 
 export const raceHistorySchema = new Schema({
   name: { type: String, required: true },
-  date: { type: Date },
-  stadium: { type: stadiumSchema, required: true },
-  track: { type: trackSchema, required: true },
-  players: [playerSchema],
+  created_at: { type: Date, default: Date.now },
+  started_at: { type: Date, required: true },
+  stadium: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "HR_stadiums",
+    default: null,
+  },
+  track: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "HR_tracks",
+    default: null,
+  },
+  players: [{ type: mongoose.Schema.Types.ObjectId, ref: "HR_players" }],
   is_cancelled: { type: Boolean, default: false },
 });
