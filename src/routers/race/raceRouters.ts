@@ -8,8 +8,7 @@ const server = initServer();
 export const raceRouter = server.router(raceContract, {
   createRace: async ({ body }) => {
     try {
-      // TODO: Add condition to check total lane count on a Track.
-      // Check if same player is added multiple times
+      // TODO: Check if same player is added multiple times or on same lane
       const players = await Player.insertMany(body.players);
 
       const race = new RaceHistory({
@@ -24,16 +23,10 @@ export const raceRouter = server.router(raceContract, {
     }
   },
   getRaces: async ({ query: { include_cancelled } }) => {
-    const query = RaceHistory.find()
-      .populate("stadium")
-      .populate("track")
-      .populate({
-        path: "players",
-        populate: [
-          { path: "jockey", model: "HR_jockeys" },
-          { path: "horse", model: "HR_horses" },
-        ],
-      });
+    const query = RaceHistory.find().populate({
+      path: "players",
+      populate: [{ path: "horse", model: "HR_horses" }],
+    });
 
     if (typeof include_cancelled === "boolean") {
       query.find({ is_cancelled: include_cancelled });

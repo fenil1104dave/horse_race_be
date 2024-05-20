@@ -7,25 +7,14 @@ import {
 import { globalContract } from "../../utils/initContracts";
 import { Race } from "./types";
 
-const TrackSchema = z.object({
-  name: z.string(),
-  track_number: z.number().min(1),
-  length: z.number().min(100),
-  no_of_lanes: z.number().min(1),
-  is_closed: z.boolean(),
-});
-
 const playerSchema = z.object({
   horse: z.string(),
-  jockey: z.string(),
   lane_number: z.number(),
 });
 
 const CreateRaceSchema = z.object({
   name: z.string({ message: "Please enter valid name." }).min(1),
   started_at: z.string(),
-  stadium: z.string(),
-  track: z.string(),
   players: z.array(playerSchema),
   is_cancelled: z.boolean().optional(),
 });
