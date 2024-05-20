@@ -6,6 +6,7 @@ import {
 } from "../../utils/statusCodes";
 import { Horse } from "./types";
 import { globalContract } from "../../utils/initContracts";
+import { createHorseSchema } from "../../schemas/horseSchema";
 
 export const horsesContract = globalContract.router(
   {
@@ -16,10 +17,7 @@ export const horsesContract = globalContract.router(
         [SuccessStatus.CREATED]: globalContract.type<Horse>(),
         [ServerError.INTERNAL_SERVER_ERROR]: globalContract.type<Error>(),
       },
-      body: z.object({
-        name: z.string(),
-        is_deleted: z.boolean().optional(),
-      }),
+      body: createHorseSchema,
       summary: "Add a horse.",
     },
     getHorses: {
@@ -27,8 +25,8 @@ export const horsesContract = globalContract.router(
       path: "/horses",
       responses: {
         [SuccessStatus.OK]: globalContract.type<{
-          horses: Horse[];
-          total: number;
+          data: Horse[];
+          count: number;
         }>(),
       },
       headers: z.object({

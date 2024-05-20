@@ -6,18 +6,7 @@ import {
 } from "../../utils/statusCodes";
 import { globalContract } from "../../utils/initContracts";
 import { Race } from "./types";
-
-const playerSchema = z.object({
-  horse: z.string(),
-  lane_number: z.number(),
-});
-
-const CreateRaceSchema = z.object({
-  name: z.string({ message: "Please enter valid name." }).min(1),
-  started_at: z.string(),
-  players: z.array(playerSchema),
-  is_cancelled: z.boolean().optional(),
-});
+import { createRaceSchema } from "../../schemas/raceSchema";
 
 export const raceContract = globalContract.router(
   {
@@ -28,7 +17,7 @@ export const raceContract = globalContract.router(
         [SuccessStatus.CREATED]: globalContract.type<Race>(),
         [ServerError.INTERNAL_SERVER_ERROR]: globalContract.type<Error>(),
       },
-      body: CreateRaceSchema,
+      body: createRaceSchema,
       summary: "Create a Race.",
     },
     getRaces: {
@@ -36,8 +25,8 @@ export const raceContract = globalContract.router(
       path: "/races",
       responses: {
         [SuccessStatus.OK]: globalContract.type<{
-          races: any[];
-          total: number;
+          data: any[];
+          count: number;
         }>(),
       },
       headers: z.object({
@@ -51,33 +40,33 @@ export const raceContract = globalContract.router(
       }),
       summary: "Get all Races",
     },
-    //   getRace: {
-    //     method: "GET",
-    //     path: "/races/:id",
-    //     responses: {
-    //       [SuccessStatus.OK]: globalContract.type<Race | null>(),
-    //     },
-    //     summary: "Get a Race",
-    //   },
-    //   DeleteRace: {
-    //     method: "DELETE",
-    //     path: "/races/:id",
-    //     body: z.any(),
-    //     responses: {
-    //       [SuccessStatus.OK]: globalContract.type<Race | null>(),
-    //     },
-    //     summary: "Cancel a race",
-    //   },
-    //   updateRace: {
-    //     method: "PUT",
-    //     path: "/races/:id",
-    //     body: z.optional(CreateRaceSchema),
-    //     responses: {
-    //       [SuccessStatus.OK]: globalContract.type<Race | null>(),
-    //       [ClientError.BAD_REQUEST]: globalContract.type<string>(),
-    //     },
-    //     summary: "Update a Race",
-    //   },
+    getRace: {
+      method: "GET",
+      path: "/races/:id",
+      responses: {
+        [SuccessStatus.OK]: globalContract.type<Race | null>(),
+      },
+      summary: "Get a Race",
+    },
+    deleteRace: {
+      method: "DELETE",
+      path: "/races/:id",
+      body: z.any(),
+      responses: {
+        [SuccessStatus.OK]: globalContract.type<Race | null>(),
+      },
+      summary: "Cancel a race",
+    },
+    updateRace: {
+      method: "PUT",
+      path: "/races/:id",
+      body: z.optional(createRaceSchema.omit({ is_cancelled: true })),
+      responses: {
+        [SuccessStatus.OK]: globalContract.type<Race | null>(),
+        [ClientError.BAD_REQUEST]: globalContract.type<string>(),
+      },
+      summary: "Update a Race",
+    },
   },
   {
     pathPrefix: "/api/v1",

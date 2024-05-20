@@ -1,9 +1,12 @@
-import { Horse } from "contracts/horses/types";
-import { Player } from "contracts/players/types";
+import {
+  createRaceSchema,
+  raceSchema,
+  updateRaceBodySchema,
+} from "schemas/raceSchema";
+import { z } from "zod";
 
-export interface Race extends BaseDBModel {
-  created_at: Date;
-  started_at: Date;
-  players: Player[];
-  is_cancelled: boolean;
-}
+export type Race = z.TypeOf<typeof raceSchema>;
+
+export type CreateRace = z.TypeOf<typeof createRaceSchema>;
+
+export type UpdateRaceBody = Partial<z.TypeOf<typeof updateRaceBodySchema>>;
