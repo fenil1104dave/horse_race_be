@@ -4,7 +4,6 @@ import app from "./app";
 const PORT = HR_EXPRESS_PORT || 3000;
 
 try {
-  console.log("PORT", PORT);
   app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
   });
