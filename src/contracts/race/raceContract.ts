@@ -1,34 +1,28 @@
 import { z } from "zod";
-import {
-  ClientError,
-  ServerError,
-  SuccessStatus,
-} from "../../utils/statusCodes";
 import { globalContract } from "../../utils/initContracts";
 import { Race } from "./types";
 import { createRaceSchema } from "../../schemas/raceSchema";
+import {
+  createItemResponses,
+  deleteItemByIdResponse,
+  getAllItemsResponses,
+  getItemByIdResponse,
+  updateItemByIdResponse,
+} from "../../utils/contractResponseutils";
 
 export const raceContract = globalContract.router(
   {
     createRace: {
       method: "POST",
       path: "/race",
-      responses: {
-        [SuccessStatus.CREATED]: globalContract.type<Race>(),
-        [ServerError.INTERNAL_SERVER_ERROR]: globalContract.type<Error>(),
-      },
+      responses: createItemResponses<Race>(),
       body: createRaceSchema,
       summary: "Create a Race.",
     },
     getRaces: {
       method: "GET",
       path: "/races",
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<{
-          data: any[];
-          count: number;
-        }>(),
-      },
+      responses: getAllItemsResponses<Race>(),
       headers: z.object({
         pagination: z.string().optional(),
       }),
@@ -43,28 +37,21 @@ export const raceContract = globalContract.router(
     getRace: {
       method: "GET",
       path: "/races/:id",
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<Race | null>(),
-      },
+      responses: getItemByIdResponse<Race>(),
       summary: "Get a Race",
     },
     deleteRace: {
       method: "DELETE",
       path: "/races/:id",
       body: z.any(),
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<Race | null>(),
-      },
+      responses: deleteItemByIdResponse<Race>(),
       summary: "Cancel a race",
     },
     updateRace: {
       method: "PUT",
       path: "/races/:id",
       body: z.optional(createRaceSchema.omit({ is_cancelled: true })),
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<Race | null>(),
-        [ClientError.BAD_REQUEST]: globalContract.type<string>(),
-      },
+      responses: updateItemByIdResponse<Race>(),
       summary: "Update a Race",
     },
   },

@@ -21,7 +21,7 @@ export const registerUser = async (data: CreateUser) => {
 
     return user;
   } catch (err) {
-    return err as Error;
+    throw err;
   }
 };
 

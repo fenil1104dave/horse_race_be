@@ -1,5 +1,6 @@
 import { Horse } from "../models/horseModel";
 import { CreateHorse, UpdateHorseBody } from "../contracts/horses/types";
+import { InternalServerError } from "../utils/errors";
 
 export const getHorses = async (include_deleted: boolean | undefined) => {
   const query = Horse.find();
@@ -20,7 +21,7 @@ export const createHorse = async (data: CreateHorse) => {
 
     return horse.toObject();
   } catch (err) {
-    return err as Error;
+    throw new InternalServerError("Failed to add Horse details.");
   }
 };
 
@@ -47,4 +48,10 @@ export const updateHorse = async (id: string, { name }: UpdateHorseBody) => {
   );
 
   return horse?.toObject() || null;
+};
+
+export const getHorsesById = async (ids: string[]) => {
+  const horses = Horse.find({ _id: { $in: ids }, is_deleted: false }).exec();
+
+  return horses;
 };

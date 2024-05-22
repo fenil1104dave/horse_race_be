@@ -7,6 +7,11 @@ import {
   getHorses,
   updateHorse,
 } from "../../controllers/horseController";
+import {
+  errorResponse,
+  successListResponse,
+  successResponse,
+} from "../../utils/responseUtils";
 
 const server = initServer();
 
@@ -15,9 +20,12 @@ export const horseRouter = server.router(horsesContract, {
     try {
       const horse = await createHorse(body);
 
-      return { status: 201, body: horse };
+      return { status: 201, body: successResponse(horse) };
     } catch (err) {
-      return { status: 500, body: err as Error };
+      return {
+        status: 500,
+        body: errorResponse("Internal Server Error", err),
+      };
     }
   },
   getHorses: async ({ query: { include_deleted } }) => {
@@ -25,21 +33,21 @@ export const horseRouter = server.router(horsesContract, {
 
     return {
       status: 200,
-      body: { data: horses, count: horses.length },
+      body: successListResponse(horses.length, horses),
     };
   },
   getHorse: async ({ params: { id } }) => {
     const horse = await getHorse(id);
 
-    return { status: 200, body: horse };
+    return { status: 200, body: successResponse(horse) };
   },
   deleteHorse: async ({ params: { id } }) => {
     const horse = await deleteHorse(id);
 
-    return { status: 202, body: horse };
+    return { status: 202, body: successResponse(horse) };
   },
   updateHorse: async ({ body, params: { id } }) => {
     const horse = await updateHorse(id, body);
-    return { status: 202, body: horse };
+    return { status: 202, body: successResponse(horse) };
   },
 });

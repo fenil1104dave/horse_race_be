@@ -1,9 +1,18 @@
+import { ResourceNotFoundError } from "../utils/errors";
 import { CreateRace, UpdateRaceBody } from "../contracts/race/types";
 import { Player } from "../models/playerModel";
 import { RaceHistory } from "../models/raceModel";
+import { getHorsesById } from "./horseController";
 
 export const createRace = async (data: CreateRace) => {
   const { players, ...rest } = data;
+
+  const validPlayers = await getHorsesById(
+    players.map((player) => player.horse)
+  );
+
+  if (validPlayers.length !== players.length)
+    throw new ResourceNotFoundError("Please select valid player details.");
 
   // TODO: Check if same player is added multiple times or on same lane
   const updatedPlayers = await Player.insertMany(players);
