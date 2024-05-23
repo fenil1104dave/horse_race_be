@@ -4,6 +4,7 @@ import "./utils/initContracts";
 import { initRouters } from "./utils/initRouters";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import cors from "cors";
 import passport from "passport";
 
 import authenticate from "./middlewares/authenticate";
@@ -14,6 +15,8 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(cors());
 
 app.use(passport.initialize());
 require("./config/passport");
