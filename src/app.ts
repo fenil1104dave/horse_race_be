@@ -8,6 +8,7 @@ import cors from "cors";
 import passport from "passport";
 import { Server, Socket } from "socket.io";
 import { createServer } from "node:http";
+import setupSockets from "./sockets";
 
 import authenticate from "./middlewares/authenticate";
 
@@ -18,24 +19,12 @@ const app = express();
 const server = createServer(app);
 
 const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173", // React app's URL
-  },
+    cors: {
+        origin: "http://localhost:5173", // React app's URL
+    },
 });
 
-// Socket.IO setup
-io.on("connection", (socket: Socket) => {
-  console.log("A user connected:", socket.id);
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-
-  socket.on("message", (msg: string) => {
-    console.log("Message received:", msg);
-    io.emit("message", msg + "From BE"); // Broadcast the message to all clients
-  });
-});
+setupSockets(io);
 
 // Middleware setup
 app.use(cors());
@@ -46,12 +35,12 @@ app.use(passport.initialize());
 require("./config/passport");
 
 app.use(
-  authenticate.unless({
-    path: [
-      { url: "/api/v1/login", methods: ["POST"] },
-      { url: "/api/v1/register", methods: ["POST"] },
-    ],
-  })
+    authenticate.unless({
+        path: [
+            { url: "/api/v1/login", methods: ["POST"] },
+            { url: "/api/v1/register", methods: ["POST"] },
+        ],
+    })
 );
 
 // Database connection
