@@ -25,4 +25,4 @@ export const loginUserSchema = z
     })
     .strict();
 
-export const refreshTokenSchema = z.object({ refresh_token: z.string() });
+export const refreshTokenSchema = z.object({ token: z.string() });

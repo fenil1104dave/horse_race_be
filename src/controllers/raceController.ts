@@ -42,8 +42,8 @@ export const getRaces = async (include_cancelled?: boolean | undefined) => {
 };
 
 export const getRace = async (id: string) => {
-    const horse = await RaceHistory.findById(id).exec();
-    return horse?.toObject() || null;
+    const race = await RaceHistory.findById(id).exec();
+    return race?.toObject() || null;
 };
 
 export const deleteRace = async (id: string) => {

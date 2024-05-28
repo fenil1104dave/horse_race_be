@@ -36,7 +36,7 @@ export const userRouters = server.router(userContract, {
     },
     refreshToken: async ({ body }) => {
         try {
-            const token = await refreshAuthToken(body.refresh_token);
+            const token = await refreshAuthToken(body.token);
 
             return { status: 200, body: { token } };
         } catch (err) {

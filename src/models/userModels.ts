@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { applyIdVirtual } from "../utils/schemaUtils";
 
 interface User extends Document {
     name: string;
@@ -19,5 +20,7 @@ const userSchema = new Schema({
     created_at: { type: Date, default: Date.now },
     is_deleted: { type: Boolean, default: false },
 });
+
+applyIdVirtual(userSchema);
 
 export const User = mongoose.model<User>("HR_users", userSchema);
