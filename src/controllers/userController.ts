@@ -1,3 +1,9 @@
+import {
+    InternalServerError,
+    ResourceAlreadyExistError,
+    UnauthorizedError,
+    ValidationError,
+} from "../utils/errors";
 import { CreateUser, LoginUserBody } from "../contracts/user/types";
 import { login, refreshAccessToken, register } from "../services/authServices";
 import {
@@ -10,10 +16,11 @@ export const registerUser = async (data: CreateUser) => {
         const { username, password, name } = data;
         const isUserExist = await findUserByUsername(data.username);
 
-        if (isUserExist) throw new Error("Username already exist.");
+        if (isUserExist)
+            throw new ResourceAlreadyExistError("Username already exist.");
 
         if (!isPasswordStringValid(data.password))
-            throw new Error(
+            throw new ValidationError(
                 "Password should have at least 8 characters, special characters and combination if capital and small letters."
             );
 
@@ -21,7 +28,7 @@ export const registerUser = async (data: CreateUser) => {
 
         return user;
     } catch (err) {
-        throw err;
+        throw new InternalServerError("Unknown error.");
     }
 };
 
@@ -31,7 +38,7 @@ export const validateUserLogin = async (data: LoginUserBody) => {
         const token = await login({ username, password });
         return token;
     } catch (err) {
-        throw err;
+        throw new UnauthorizedError("Wrong username or password.");
     }
 };
 
@@ -40,6 +47,8 @@ export const refreshAuthToken = async (refreshToken: string) => {
         const { accessToken } = await refreshAccessToken(refreshToken);
         return accessToken;
     } catch (err) {
-        throw err;
+        throw new InternalServerError(
+            "Unable to fetch token please try again later."
+        );
     }
 };

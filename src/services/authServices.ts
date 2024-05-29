@@ -12,7 +12,7 @@ export const register = async (userData: {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ username, password: hashedPassword, name });
     await user.save();
-    return user.toObject();
+    return user.toJSON();
 };
 
 export const login = async (userData: {
@@ -20,7 +20,7 @@ export const login = async (userData: {
     password: string;
 }) => {
     const { username, password } = userData;
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).select("password");
     if (!user) {
         throw new Error("Invalid credentials");
     }

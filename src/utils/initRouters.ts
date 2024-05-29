@@ -7,13 +7,13 @@ import { userRouters } from "../routers/user/userRouters";
 import validateObjectId from "../middlewares/validateObjectId";
 
 const combinedRouters = {
-  ...horseRouter,
-  ...raceRouter,
-  ...userRouters,
+    ...horseRouter,
+    ...raceRouter,
+    ...userRouters,
 };
 
 export const initRouters = (app: Express) => {
-  createExpressEndpoints(contracts, combinedRouters, app, {
-    globalMiddleware: [validateObjectId],
-  });
+    createExpressEndpoints(contracts, combinedRouters, app, {
+        globalMiddleware: [validateObjectId],
+    });
 };
