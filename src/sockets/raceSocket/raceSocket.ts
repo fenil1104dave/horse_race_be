@@ -8,14 +8,19 @@ import { getRaces } from "../../controllers/raceController";
 
 let raceInterval: null | NodeJS.Timeout = null;
 
-const getSocketRaces = (io: Server) => {
-    raceInterval = setInterval(async () => {
-        const races = await getRaces();
+const emitRaces = async (io: Server) => {
+    const races = await getRaces();
 
-        io.emit("raceMessage", {
-            type: RaceSocketMessageConstant.GET_RACES,
-            data: races,
-        });
+    io.emit("raceMessage", {
+        type: RaceSocketMessageConstant.GET_RACES,
+        data: races,
+    });
+};
+
+const getSocketRaces = async (io: Server) => {
+    await emitRaces(io);
+    raceInterval = setInterval(async () => {
+        await emitRaces(io);
     }, GET_RACE_INTERVAL);
 };
 
