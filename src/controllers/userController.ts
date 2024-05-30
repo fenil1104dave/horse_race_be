@@ -28,7 +28,7 @@ export const registerUser = async (data: CreateUser) => {
 
         return user;
     } catch (err) {
-        throw new InternalServerError("Unknown error.");
+        throw err;
     }
 };
 

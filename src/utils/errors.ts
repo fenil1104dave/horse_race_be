@@ -1,10 +1,12 @@
+import { HTTPStatusCode } from "@ts-rest/core";
 import HttpStatusCode from "./HTTPStatusCode";
+import { errorResponse } from "./responseUtils";
 
 export type Status = keyof typeof HttpStatusCode;
 
 export class UnauthorizedError extends Error {
-    status: Status;
-    constructor(message: string, status: Status = "UNAUTHORIZED") {
+    status: HTTPStatusCode;
+    constructor(message: string, status: HTTPStatusCode = 401) {
         super(message);
         this.name = "UnauthorizedError";
         this.status = status;
@@ -12,8 +14,8 @@ export class UnauthorizedError extends Error {
 }
 
 export class ValidationError extends Error {
-    status: Status;
-    constructor(message: string, status: Status = "BAD_REQUEST") {
+    status: HTTPStatusCode;
+    constructor(message: string, status: HTTPStatusCode = 400) {
         super(message);
         this.name = "ValidationError";
         this.status = status;
@@ -21,8 +23,8 @@ export class ValidationError extends Error {
 }
 
 export class ResourceNotFoundError extends Error {
-    status: Status;
-    constructor(message: string, status: Status = "NOT_FOUND") {
+    status: HTTPStatusCode;
+    constructor(message: string, status: HTTPStatusCode = 404) {
         super(message);
         this.name = "ResourceNotFound.";
         this.status = status;
@@ -30,8 +32,8 @@ export class ResourceNotFoundError extends Error {
 }
 
 export class InternalServerError extends Error {
-    status: Status;
-    constructor(message: string, status: Status = "INTERNAL_SERVER_ERROR") {
+    status: HTTPStatusCode;
+    constructor(message: string, status: HTTPStatusCode = 500) {
         super(message);
         this.name = "InternalServerError.";
         this.status = status;
@@ -39,8 +41,8 @@ export class InternalServerError extends Error {
 }
 
 export class ResourceAlreadyExistError extends Error {
-    status: Status;
-    constructor(message: string, status: Status = "CONFLICT") {
+    status: HTTPStatusCode;
+    constructor(message: string, status: HTTPStatusCode = 409) {
         super(message);
         this.name = "ResourceAlreadyExist.";
         this.status = status;
@@ -53,3 +55,17 @@ export type FormattedErrorParam =
     | ResourceNotFoundError
     | ValidationError
     | UnauthorizedError;
+
+export type FormattedErrorResponse = {
+    status: number;
+    body: ReturnType<typeof errorResponse>;
+};
+
+export const formattedError = (
+    error: FormattedErrorParam
+): FormattedErrorResponse => {
+    return {
+        status: error.status,
+        body: errorResponse(error.message, error.name),
+    };
+};

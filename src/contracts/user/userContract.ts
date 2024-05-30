@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { ClientError, SuccessStatus } from "../../utils/statusCodes";
 import { User } from "./types";
 import { globalContract } from "../../utils/initContracts";
 import {
@@ -8,6 +7,7 @@ import {
     refreshTokenSchema,
 } from "../../schemas/userSchema";
 import { createItemResponses } from "../../utils/contractResponseutils";
+import HttpStatusCode from "../../utils/HTTPStatusCode";
 
 export const userContract = globalContract.router(
     {
@@ -23,11 +23,11 @@ export const userContract = globalContract.router(
             path: "/login",
             responses: {
                 ...createItemResponses<User>(),
-                [SuccessStatus.OK]: z.object({
+                [HttpStatusCode.OK]: z.object({
                     token: z.string(),
                     refreshToken: z.string(),
                 }),
-                [ClientError.UNAUTHORIZED]: globalContract.type<Error>(),
+                [HttpStatusCode.UNAUTHORIZED]: globalContract.type<Error>(),
             },
             body: loginUserSchema,
             summary: "Authenticate a user.",
@@ -37,10 +37,10 @@ export const userContract = globalContract.router(
             path: "/refresh",
             responses: {
                 ...createItemResponses<User>(),
-                [SuccessStatus.OK]: z.object({
+                [HttpStatusCode.OK]: z.object({
                     token: z.string(),
                 }),
-                [ClientError.UNAUTHORIZED]: globalContract.type<Error>(),
+                [HttpStatusCode.UNAUTHORIZED]: globalContract.type<Error>(),
             },
             body: refreshTokenSchema,
             summary: "Refresh a token",

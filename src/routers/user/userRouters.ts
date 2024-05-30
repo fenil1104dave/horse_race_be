@@ -6,6 +6,7 @@ import {
     validateUserLogin,
 } from "../../controllers/userController";
 import { errorResponse, successResponse } from "../../utils/responseUtils";
+import { FormattedErrorParam } from "utils/errors";
 
 const server = initServer();
 
@@ -16,12 +17,10 @@ export const userRouters = server.router(userContract, {
 
             return { status: 201, body: successResponse(user) };
         } catch (err) {
+            const { message, name, status } = err as FormattedErrorParam;
             return {
                 status: 500,
-                body: errorResponse(
-                    "Internal Server Error",
-                    (err as Error)?.message
-                ),
+                body: errorResponse(message, name),
             };
         }
     },
@@ -31,7 +30,8 @@ export const userRouters = server.router(userContract, {
 
             return { status: 200, body: token };
         } catch (err) {
-            return { status: 401, body: errorResponse("Unauthorized", err) };
+            const { message, name } = err as FormattedErrorParam;
+            return { status: 401, body: errorResponse(message, name) };
         }
     },
     refreshToken: async ({ body }) => {
@@ -40,7 +40,8 @@ export const userRouters = server.router(userContract, {
 
             return { status: 200, body: { token } };
         } catch (err) {
-            return { status: 401, body: errorResponse("Unauthorized", err) };
+            const { message, name } = err as FormattedErrorParam;
+            return { status: 401, body: errorResponse(message, name) };
         }
     },
 });
