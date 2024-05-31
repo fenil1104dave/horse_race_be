@@ -1,5 +1,4 @@
 import express from "express";
-import { connectDB } from "./db";
 import "./utils/initContracts";
 import { initRouters } from "./utils/initRouters";
 import bodyParser from "body-parser";
@@ -43,9 +42,6 @@ app.use(
         ],
     })
 );
-
-// Database connection
-connectDB();
 
 // Initialize routes
 initRouters(app);

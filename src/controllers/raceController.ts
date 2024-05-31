@@ -3,6 +3,16 @@ import { CreateRace, UpdateRaceBody } from "../contracts/race/types";
 import { Player } from "../models/playerModel";
 import { RaceHistory } from "../models/raceModel";
 import { getHorsesById } from "./horseController";
+// import { Horse } from "../models/horseModel";
+// import { addPlayersToRaces } from "../utils/fixtures/raceNames.fixture";
+
+// const createRandomRaces = async () => {
+//     const horses = await Horse.find().exec();
+//     const races = await addPlayersToRaces(horses);
+//     races.map(async (race) => {
+//         await createRace(race as CreateRace)
+//     })
+// };
 
 export const createRace = async (data: CreateRace) => {
     const { players, ...rest } = data;
@@ -27,6 +37,7 @@ export const createRace = async (data: CreateRace) => {
 };
 
 export const getRaces = async (include_cancelled?: boolean | undefined) => {
+    // await createRandomRaces();
     const query = RaceHistory.find().populate({
         path: "players",
         populate: [{ path: "horse", model: "HR_horses" }],

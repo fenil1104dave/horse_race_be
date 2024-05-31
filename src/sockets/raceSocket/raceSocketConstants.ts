@@ -3,4 +3,4 @@ export const RaceSocketMessageConstant = {
     DISCONNECT_RACES: "DISCONNECT_RACES",
 };
 
-export const GET_RACE_INTERVAL = 2000;
+export const GET_RACE_INTERVAL = 5 * 1000;

@@ -11,9 +11,15 @@ let raceInterval: null | NodeJS.Timeout = null;
 const emitRaces = async (io: Server) => {
     const races = await getRaces();
 
+    const randomRaces = [];
+
+    for (let i = 0; i < 6; i++) {
+        randomRaces.push(races[Math.floor(Math.random() * races.length)]);
+    }
+
     io.emit("raceMessage", {
         type: RaceSocketMessageConstant.GET_RACES,
-        data: races,
+        data: randomRaces,
     });
 };
 
