@@ -1,34 +1,31 @@
 import { z } from "zod";
-import {
-  ClientError,
-  ServerError,
-  SuccessStatus,
-} from "../../utils/statusCodes";
 import { Horse } from "./types";
 import { globalContract } from "../../utils/initContracts";
-import { createHorseSchema } from "../../schemas/horseSchema";
+import {
+  createHorseSchema,
+  updateHorseSchema,
+} from "../../schemas/horseSchema";
+import {
+  createItemResponses,
+  deleteItemByIdResponse,
+  getAllItemsResponses,
+  getItemByIdResponse,
+  updateItemByIdResponse,
+} from "../../utils/contractResponseutils";
 
 export const horsesContract = globalContract.router(
   {
     createHorse: {
       method: "POST",
       path: "/horse",
-      responses: {
-        [SuccessStatus.CREATED]: globalContract.type<Horse>(),
-        [ServerError.INTERNAL_SERVER_ERROR]: globalContract.type<Error>(),
-      },
+      responses: createItemResponses<Horse>(),
       body: createHorseSchema,
       summary: "Add a horse.",
     },
     getHorses: {
       method: "GET",
       path: "/horses",
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<{
-          data: Horse[];
-          count: number;
-        }>(),
-      },
+      responses: getAllItemsResponses<Horse>(),
       headers: z.object({
         pagination: z.string().optional(),
       }),
@@ -43,30 +40,21 @@ export const horsesContract = globalContract.router(
     getHorse: {
       method: "GET",
       path: "/horses/:id",
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
-      },
+      responses: getItemByIdResponse<Horse>(),
       summary: "Get a horse",
     },
     deleteHorse: {
       method: "DELETE",
       path: "/horses/:id",
       body: z.any(),
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
-      },
+      responses: deleteItemByIdResponse<Horse>(),
       summary: "Soft-Delete a horse",
     },
     updateHorse: {
       method: "PUT",
       path: "/horses/:id",
-      body: z.object({
-        name: z.string({ message: "Please enter valid name." }).min(1),
-      }),
-      responses: {
-        [SuccessStatus.OK]: globalContract.type<Horse | null>(),
-        [ClientError.BAD_REQUEST]: globalContract.type<string>(),
-      },
+      body: updateHorseSchema,
+      responses: updateItemByIdResponse<Horse>(),
       summary: "Update a horse",
     },
   },
