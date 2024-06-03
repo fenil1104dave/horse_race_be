@@ -7,6 +7,7 @@ const startServer = async () => {
         // Database connection
         await connectDB();
 
+        // Server and Socket connection
         await setupSockets();
 
         // Graceful shutdown

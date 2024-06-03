@@ -45,22 +45,6 @@ export const userContract = globalContract.router(
             body: refreshTokenSchema,
             summary: "Refresh a token",
         },
-
-        // updateUser: {
-        //   method: "PUT",
-        //   path: "/user/:id",
-        //   body: z.object({
-        //     name: z.string({ message: "Please enter valid name" }).min(1),
-        //     new_password: z
-        //       .string({ message: "Please enter valid password." })
-        //       .min(MIN_PASSWORD_LENGTH),
-        //   }),
-        //   responses: {
-        //     [SuccessStatus.OK]: globalContract.type<User | null>(),
-        //     [ClientError.BAD_REQUEST]: globalContract.type<string>(),
-        //   },
-        //   summary: "Update a user",
-        // },
     },
     {
         pathPrefix: "/api/v1",

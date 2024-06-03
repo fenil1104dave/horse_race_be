@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 import {
     HR_MDB_DB,
     HR_MDB_HOST,
+    HR_MDB_PASSWORD,
     HR_MDB_PORT,
+    HR_MDB_USER,
     MAX_RETRIES,
     RETRY_DELAY,
 } from "../config";
@@ -13,8 +15,8 @@ export const connectDB = async () => {
     const connectWithRetry = async () => {
         try {
             await mongoose.connect(`mongodb://${HR_MDB_HOST}:${HR_MDB_PORT}/`, {
-                //   user: HR_MDB_USER,
-                //   pass: HR_MDB_PASSWORD,
+                user: HR_MDB_USER,
+                pass: HR_MDB_PASSWORD,
                 dbName: HR_MDB_DB,
             });
             console.log("CONNECTED TO THE DATABASE.");

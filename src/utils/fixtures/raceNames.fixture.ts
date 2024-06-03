@@ -57,26 +57,29 @@ function generateUniqueHorseRaceNames(count: number) {
 export const FIXETURE_RACES = generateUniqueHorseRaceNames(100);
 
 export const addPlayersToRaces = (horses: any[]) => {
-    // Define a function to get a random horse from the horses array
     function getRandomHorse() {
         return horses[Math.floor(Math.random() * horses.length)];
     }
 
-    // Iterate over each race
     return FIXETURE_RACES.map((race) => {
-        // Initialize an empty array to store players for this race
         const players = [];
 
-        // Add 6 players to the race
         for (let i = 0; i < 6; i++) {
             const randomHorse = getRandomHorse();
             players.push({
                 horse: randomHorse._id,
-                lane_number: i + 1, // Lane number ranges from 1 to 6
+                lane_number: i + 1,
             });
         }
 
-        // Add the 'players' key to the race object
         return { ...race, players };
     });
 };
+
+// const createRandomRaces = async () => {
+//     const horses = await Horse.find().exec();
+//     const races = await addPlayersToRaces(horses);
+//     races.map(async (race) => {
+//         await createRace(race as CreateRace)
+//     })
+// };

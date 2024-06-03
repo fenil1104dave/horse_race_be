@@ -5,7 +5,6 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import passport from "passport";
-import { createServer } from "node:http";
 
 import authenticate from "./middlewares/authenticate";
 

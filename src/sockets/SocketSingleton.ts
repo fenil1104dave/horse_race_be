@@ -29,7 +29,7 @@ class SocketSingleton {
         this.server = http.createServer(app);
         this.io = new Server(this.server, {
             cors: {
-                origin: "*", // Adjust this to your client origin
+                origin: "*",
                 methods: ["GET", "POST"],
             },
         });
